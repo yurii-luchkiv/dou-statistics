@@ -1,6 +1,9 @@
 package com.forcelate.utils;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,5 +24,14 @@ public class FileUtils {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    public static void saveVacancy(String vacancyId, String description) throws IOException {
+        String currentPath = System.getProperty("user.dir");
+        String vacancyFile = currentPath + "/vacancies/" + vacancyId + ".txt";
+        System.out.println("Saving vacancy = " + vacancyId + "...");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(vacancyFile));
+        writer.write(description);
+        writer.close();
     }
 }
