@@ -14,8 +14,6 @@ public class ScrapperTexts {
     public static void main(String[] args) {
         String path = "/Users/yuriiluchkiv/Development/workspace-l-files/dou-statistics/src/main/resources";
         String fileName = path + "/unity.txt";
-
-        //read file into stream, try-with-resources
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
 
             stream.forEach(url -> {
