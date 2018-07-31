@@ -1,20 +1,15 @@
 package com.forcelate;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +27,8 @@ public class ScrapperURLs {
         System.out.println("#1");
         WebDriver driver = new ChromeDriver();
         System.out.println("#2");
-        driver.get("https://jobs.dou.ua/vacancies/?category=Unity");
+//        driver.get("https://jobs.dou.ua/vacancies/?category=Unity");
+        driver.get("https://jobs.dou.ua/vacancies/?category=Node.js");
         System.out.println("#3");
 
         boolean isMoreButtonDisplayed = driver.findElement(By.cssSelector(".more-btn > a")).isDisplayed();
