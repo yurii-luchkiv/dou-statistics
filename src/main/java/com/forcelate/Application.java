@@ -9,7 +9,7 @@ public class Application {
 
     public static void main(String[] args) {
         debug("Started...");
-        executeAll();
+        executeOne();
         debug("Completed...");
     }
 
