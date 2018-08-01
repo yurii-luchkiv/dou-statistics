@@ -6,6 +6,12 @@ import com.forcelate.domain.ProgressState;
 import com.forcelate.services.ProgressService;
 import com.forcelate.services.ScrapperService;
 import com.forcelate.utils.*;
+import org.knowm.xchart.BitmapEncoder;
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.PieChartBuilder;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.style.PieStyler;
+import org.knowm.xchart.style.Styler;
 
 import java.io.IOException;
 import java.util.*;
@@ -95,6 +101,22 @@ public class Application {
             debug("===================== RESULTS =====================");
             sortedWordsByPopularity.forEach((key, value) -> debug(key + " => " + value));
             debug("===================== RESULTS =====================");
+
+            PieChart chart = new PieChartBuilder().width(800).height(600)
+                    .title("My Pie Chart")
+                    .theme(Styler.ChartTheme.GGPlot2)
+                    .build();
+
+            chart.getStyler().setLegendVisible(false);
+            chart.getStyler().setAnnotationType(PieStyler.AnnotationType.LabelAndPercentage);
+            chart.getStyler().setAnnotationDistance(1.15);
+            chart.getStyler().setPlotContentSize(.7);
+            chart.getStyler().setStartAngleInDegrees(90);
+            sortedWordsByPopularity.forEach(chart::addSeries);
+            // new SwingWrapper(chart).displayChart();
+            //BitmapEncoder.saveBitmap(chart, "./Sample_Chart", BitmapEncoder.BitmapFormat.PNG);
+            BitmapEncoder.saveBitmapWithDPI(chart, "./Sample_Chart_500_DPI", BitmapEncoder.BitmapFormat.PNG, 500);
+
         } catch (IOException | InterruptedException e) {
             debug("================== (!) WARNING ==================");
             debug("Execution aborted...");
