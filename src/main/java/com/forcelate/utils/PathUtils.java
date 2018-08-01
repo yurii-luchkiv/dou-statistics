@@ -35,6 +35,6 @@ public class PathUtils {
     }
 
     public static String getJobPath(Category category) {
-        return getDescriptionsFolderPath() + "/" + category.getValue() + EXTENSION;
+        return getJobsFolderPath() + "/" + category.getValue() + EXTENSION;
     }
 }

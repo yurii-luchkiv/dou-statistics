@@ -37,7 +37,7 @@ public class ScrapperService {
         while (findMoreJobsButton(driver).isDisplayed()) {
             findMoreJobsButton(driver).click();
             iteration++;
-            debug("Iteration [ xx / " + iteration * 20 + "]");
+            debug("Iteration (urls) [~ xx / " + iteration * 20 + "]");
             Thread.sleep(Configuration.SLEEP_BETWEEN_CLICK_LOAD_MORE);
         }
 
