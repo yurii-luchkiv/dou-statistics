@@ -1,4 +1,11 @@
 ====================
+DevOps:
+experience => 832
+knowledge => 257
+systems => 230
+tools => 221
+development => 219
+====================
 Java:
 experience => 1159
 development => 486
@@ -20,12 +27,40 @@ team => 167
 development => 164
 nodejs => 143
 ====================
+PHP:
+experience => 773
+php => 442
+knowledge => 388
+development => 316
+team => 307
+====================
+Product Manager:
+product => 198
+experience => 147
+team => 112
+development => 92
+working => 73
+====================
+Project Manager:
+project => 473
+experience => 441
+management => 391
+team => 379
+development => 348
+====================
 Python: 
 experience => 507
 development => 182
 team => 176
 knowledge => 167
 python => 149
+====================
+Ruby:
+experience => 211
+ruby => 99
+team => 91
+development => 88
+working => 76
 ====================
 Unity:
 experience => 39

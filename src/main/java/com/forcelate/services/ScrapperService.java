@@ -33,12 +33,13 @@ public class ScrapperService {
         WebDriver driver = new ChromeDriver();
         driver.get(DOU_URL + category.getValue());
 
-        long iteration = 1;
+        long iteration = 0;
         while (findMoreJobsButton(driver).isDisplayed()) {
             findMoreJobsButton(driver).click();
             // click() is clicking two times (40 new elements loaded)
             iteration++;
             debug("Iteration (urls) [~ xx / " + iteration * 40 + "]");
+            debug("Sleeping...zzz....");
             Thread.sleep(Configuration.SLEEP_BETWEEN_CLICK_LOAD_MORE);
         }
 
