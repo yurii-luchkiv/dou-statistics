@@ -20,6 +20,13 @@ systems => 230
 tools => 221
 development => 219
 ====================
+Front-End:
+experience => 1495
+development => 635
+team => 623
+knowledge => 576
+working => 434
+====================
 HR:
 experience => 138
 skills => 134

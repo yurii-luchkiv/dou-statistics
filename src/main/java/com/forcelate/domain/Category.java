@@ -9,6 +9,7 @@ public enum Category {
     BLOCKCHAIN("Blockchain"),
     DESIGN("Дизайн"),
     DEVOPS("DevOps"),
+    FRONT_END("Front End"),
     JAVA("Java"),
     HR("HR"),
     MARKETING("Маркетинг"),
