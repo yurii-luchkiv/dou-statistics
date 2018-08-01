@@ -1,9 +1,17 @@
+====================
 Java:
 experience => 1159
 development => 486
 java => 430
 team => 382
 knowledge => 354
+====================
+.NET:
+experience => 1078
+development => 640
+team => 571
+knowledge => 444
+net => 442
 ====================
 Node.js:
 experience => 421

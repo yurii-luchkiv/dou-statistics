@@ -36,8 +36,9 @@ public class ScrapperService {
         long iteration = 1;
         while (findMoreJobsButton(driver).isDisplayed()) {
             findMoreJobsButton(driver).click();
+            // click() is clicking two times (40 new elements loaded)
             iteration++;
-            debug("Iteration (urls) [~ xx / " + iteration * 20 + "]");
+            debug("Iteration (urls) [~ xx / " + iteration * 40 + "]");
             Thread.sleep(Configuration.SLEEP_BETWEEN_CLICK_LOAD_MORE);
         }
 
@@ -49,10 +50,10 @@ public class ScrapperService {
 
     public static String scrapeDescriptions(Category category) throws IOException {
         StringBuilder descriptions = new StringBuilder();
-        String descriptionFilePath = PathUtils.getDescriptionPath(category);
+        String path = PathUtils.getJobPath(category);
         long[] iterationArr = { 0 };
-        long count = Files.lines(Paths.get(descriptionFilePath)).count();
-        try (Stream<String> stream = Files.lines(Paths.get(descriptionFilePath))) {
+        long count = Files.lines(Paths.get(path)).count();
+        try (Stream<String> stream = Files.lines(Paths.get(path))) {
             stream.forEach(url -> {
                 try {
                     long iteration = iterationArr[0];

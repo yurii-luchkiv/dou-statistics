@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Category {
     JAVA("Java"),
+    NET(".NET"),
     NODEJS("Node.js"),
     PYTHON("Python"),
     UNITY("Unity");
