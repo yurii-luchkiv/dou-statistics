@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Category {
+    DESIGN("Дизайн"),
     DEVOPS("DevOps"),
     JAVA("Java"),
+    MARKETING("Маркетинг"),
     NET(".NET"),
     NODEJS("Node.js"),
     PHP("PHP"),

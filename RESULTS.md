@@ -1,4 +1,11 @@
 ====================
+Design:
+design => 442
+experience => 321
+team => 197
+knowledge => 143
+skills => 141
+====================
 DevOps:
 experience => 832
 knowledge => 257
@@ -19,6 +26,13 @@ development => 640
 team => 571
 knowledge => 444
 net => 442
+====================
+Marketing:
+marketing => 344
+experience => 270
+media => 155
+skills => 154
+team => 149
 ====================
 Node.js:
 experience => 421
