@@ -1,6 +1,7 @@
 package com.forcelate;
 
 import com.forcelate.domain.Category;
+import com.forcelate.services.ScrapperService;
 import com.forcelate.utils.FileUtils;
 import com.forcelate.utils.NoiseUtils;
 import com.forcelate.utils.ShitWordUtils;
@@ -13,14 +14,16 @@ import java.util.stream.Collectors;
 
 public class Application {
     public static void main(String[] args) throws IOException {
-        Category category = Category.NODEJS;
-//        FileUtils.prepareFolders();
-//
-//        List<String> urls = ScrapperService.scrapeURLs(category);
-//        FileUtils.saveCategoryUrls(category, urls);
-//
-//        String descriptions = ScrapperService.scrapeDescriptions(category);
-//        FileUtils.saveCategoryDescriptions(category, descriptions);
+        Category category = Category.PYTHON;
+        FileUtils.prepareFolders();
+
+        List<String> urls = ScrapperService.scrapeURLs(category);
+        FileUtils.saveCategoryUrls(category, urls);
+        System.out.println("(!!!) Saved URLs");
+
+        String descriptions = ScrapperService.scrapeDescriptions(category);
+        FileUtils.saveCategoryDescriptions(category, descriptions);
+        System.out.println("(!!!) Saved Descriptions");
 
         // load stop words
         StopWordUtils.load();

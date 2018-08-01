@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum Category {
     JAVA("Java"),
     NODEJS("Node.js"),
+    PYTHON("Python"),
     UNITY("Unity");
 
     private String value;
