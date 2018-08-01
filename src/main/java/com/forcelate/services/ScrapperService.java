@@ -1,7 +1,10 @@
 package com.forcelate.services;
 
+import com.forcelate.configuration.Configuration;
+import com.forcelate.configuration.Constants;
 import com.forcelate.domain.Category;
-import com.forcelate.utils.FileUtils;
+import com.forcelate.logger.Logger;
+import com.forcelate.utils.PathUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,40 +17,28 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.forcelate.configuration.Constants.CssSelectors.MORE_BUTTON;
+import static com.forcelate.configuration.Constants.CssSelectors.VACANCIES_URLS;
+import static com.forcelate.configuration.Constants.CssSelectors.VACANCY_DESCRIPTIONS;
+import static com.forcelate.configuration.Constants.DOU_URL;
+import static com.forcelate.logger.Logger.debug;
+
 public class ScrapperService {
 
-    public static List<String> scrapeURLs(Category category) {
+    public static List<String> scrapeURLs(Category category) throws InterruptedException {
         // load
-        String currentPath = System.getProperty("user.dir");
-        String driverPath = currentPath + "/driver/chromedriver";
-        System.setProperty("webdriver.chrome.driver", driverPath);
         WebDriver driver = new ChromeDriver();
-        driver.get("https://jobs.dou.ua/vacancies/?category=" + category.getValue());
+        driver.get(DOU_URL + category.getValue());
 
-        boolean isMoreJobsButtonDisplayed = findMoreJobsButton(driver).isDisplayed();
-
-        if (isMoreJobsButtonDisplayed) {
-            int iteration = 1;
-            while (isMoreJobsButtonDisplayed) {
-                isMoreJobsButtonDisplayed = findMoreJobsButton(driver).isDisplayed();
-                if (isMoreJobsButtonDisplayed) {
-                    findMoreJobsButton(driver).click();
-                }
-                iteration++;
-                System.out.println("isDisplayed: " + isMoreJobsButtonDisplayed + ", iteration [" + iteration + "]");
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            // TODO: less than 20 jobs
+        long iteration = 1;
+        while (findMoreJobsButton(driver).isDisplayed()) {
+            findMoreJobsButton(driver).click();
+            iteration++;
+            debug("Iteration [ xx / " + iteration * 20 + "]");
+            Thread.sleep(Configuration.SLEEP_BETWEEN_CLICK_LOAD_MORE);
         }
 
         List<String> urls = findURLsBySelenium(driver);
@@ -56,27 +47,25 @@ public class ScrapperService {
         return urls;
     }
 
-    public static String scrapeDescriptions(Category category) {
+    public static String scrapeDescriptions(Category category) throws IOException {
         StringBuilder descriptions = new StringBuilder();
-        String categoryFilePath = FileUtils.getCategoryFilePath(category);
-        try (Stream<String> stream = Files.lines(Paths.get(categoryFilePath))) {
+        String descriptionFilePath = PathUtils.getDescriptionPath(category);
+        long[] iterationArr = { 0 };
+        long count = Files.lines(Paths.get(descriptionFilePath)).count();
+        try (Stream<String> stream = Files.lines(Paths.get(descriptionFilePath))) {
             stream.forEach(url -> {
                 try {
-                    System.out.println("...");
+                    long iteration = iterationArr[0];
+                    debug("Iteration (descriptions) [ " + iteration + " / " + count + "]");
+                    iterationArr[0]++;
                     Document document = Jsoup.connect(url).get();
-                    Elements elements = document.select(".vacancy-section > p");
-                    elements.forEach(element -> {
-                        // TODO: add comment
-                        descriptions.append(element.text());
-                    });
+                    Elements elements = document.select(VACANCY_DESCRIPTIONS);
+                    elements.forEach(element -> descriptions.append(element.text()));
                     descriptions.append("\n");
                 } catch (IOException e) {
-                    // TODO
+                    ProgressService.addMessage("IOException during scrape descriptions: " + e.getMessage());
                 }
             });
-
-        } catch (IOException e) {
-            // TODO
         }
         return descriptions.toString();
     }
@@ -86,11 +75,11 @@ public class ScrapperService {
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------------
     private static WebElement findMoreJobsButton(WebDriver driver) {
-        return driver.findElement(By.cssSelector(".more-btn > a"));
+        return driver.findElement(By.cssSelector(MORE_BUTTON));
     }
 
     private static List<String> findURLsBySelenium(WebDriver driver) {
-        return driver.findElements(By.cssSelector("#vacancyListId ul > li .vt"))
+        return driver.findElements(By.cssSelector(VACANCIES_URLS))
                 .stream()
                 .map(element -> element.getAttribute("href"))
                 .collect(Collectors.toList());

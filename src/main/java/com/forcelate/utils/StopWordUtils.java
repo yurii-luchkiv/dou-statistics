@@ -42,37 +42,4 @@ public class StopWordUtils {
         String firstLetter = word.substring(0, 1).toLowerCase();
         return !ALPHABET_MAPPING.get(firstLetter).contains(word);
     }
-
-    // ------------------------------------------------------------------------------------------
-    // PRIVATE METHODS
-    // ------------------------------------------------------------------------------------------
-    // NOTE: (!!!) ONLY development purposes
-    private static void filterDuplicatedAndSortAlphabetically() throws IOException {
-        String fileName = "src/main/resources/stopwords.txt";
-        Map<String, String> alphabetMapping = new LinkedHashMap<>();
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
-            stream.forEach(line -> {
-                String[] strings = line.split("=");
-                String letter = strings[0];
-                String wordsAsString = strings[1];
-                alphabetMapping.put(letter, wordsAsString);
-            });
-        }
-        Map<String, String> filteredAlphabetMapping = alphabetMapping.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> {
-                            String wordsAsString = entry.getValue();
-                            String[] words = wordsAsString.split(",");
-                            Set<String> uniqueWords = new LinkedHashSet<>(Arrays.asList(words));
-                            List<String> uniqueWordsAsArray = new ArrayList<>(uniqueWords);
-                            Collections.sort(uniqueWordsAsArray);
-                            return uniqueWordsAsArray.stream().collect(Collectors.joining(","));
-                        }
-                ));
-
-        filteredAlphabetMapping.forEach((key, value) -> {
-            System.out.println(key + "=" + value);
-        });
-    }
 }

@@ -1,59 +1,90 @@
 package com.forcelate;
 
+import com.forcelate.configuration.Configuration;
 import com.forcelate.domain.Category;
+import com.forcelate.domain.ProgressState;
+import com.forcelate.services.ProgressService;
 import com.forcelate.services.ScrapperService;
-import com.forcelate.utils.FileUtils;
-import com.forcelate.utils.NoiseUtils;
-import com.forcelate.utils.ShitWordUtils;
-import com.forcelate.utils.StopWordUtils;
+import com.forcelate.utils.*;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.forcelate.logger.Logger.debug;
+
 public class Application {
-    public static void main(String[] args) throws IOException {
-        Category category = Category.PYTHON;
-        FileUtils.prepareFolders();
+    public static void main(String[] args) {
+        try {
+            Category category = Configuration.CATEGORY;
 
-        List<String> urls = ScrapperService.scrapeURLs(category);
-        FileUtils.saveCategoryUrls(category, urls);
-        System.out.println("(!!!) Saved URLs");
+            // prepare env
+            ProgressService.updateProgress(ProgressState.FOLDERS_ARE_PREPARING);
+            FileUtils.prepareFolders();
 
-        String descriptions = ScrapperService.scrapeDescriptions(category);
-        FileUtils.saveCategoryDescriptions(category, descriptions);
-        System.out.println("(!!!) Saved Descriptions");
+            ProgressService.updateProgress(ProgressState.DRIVER_ARE_LOADING);
+            DriverUtils.load();
 
-        // load stop words
-        StopWordUtils.load();
-        ShitWordUtils.load();
+            ProgressService.updateProgress(ProgressState.STOP_WORDS_ARE_LOADING);
+            StopWordUtils.load();
 
-        String text = FileUtils.readCategoryText(category);
-        String[] wordsAsArray = text.split(" ");
-        List<String> words = Arrays.stream(wordsAsArray)
-                .map(String::toLowerCase)
-                .map(NoiseUtils::leaveOnlyEnglishSymbols)
-                .filter(StopWordUtils::isNotEmptyWord)
-                .filter(StopWordUtils::isNotStopWord)
-                .filter(ShitWordUtils::isNotShitWord)
-                .collect(Collectors.toList());
+            ProgressService.updateProgress(ProgressState.SHIT_WORDS_ARE_LOADING);
+            ShitWordUtils.load();
 
-        Map<String, Long> wordsByPopularity = words.stream()
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.counting()
-                ));
+            // scrape: URLs
+            ProgressService.updateProgress(ProgressState.URL_SCRAPPING);
+            List<String> urls = ScrapperService.scrapeURLs(category);
 
-        LinkedHashMap<String, Long> sortedWordsByPopularity = wordsByPopularity.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(5)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+            ProgressService.updateProgress(ProgressState.URL_SAVING);
+            FileUtils.saveCategoryUrls(category, urls);
 
-        sortedWordsByPopularity.forEach((key, value) -> {
-            // add comment
-            System.out.println(key + " => " + value);
-        });
+            // scrape: descriptions
+            ProgressService.updateProgress(ProgressState.DESCRIPTION_SCRAPPING);
+            String descriptions = ScrapperService.scrapeDescriptions(category);
+
+            ProgressService.updateProgress(ProgressState.DESCRIPTION_SAVING);
+            FileUtils.saveCategoryDescriptions(category, descriptions);
+
+            // find words
+            ProgressService.updateProgress(ProgressState.DESCRIPTION_READING);
+            String text = FileUtils.readCategoryDescription(category);
+
+            ProgressService.updateProgress(ProgressState.WORDS_PROCESSING);
+            String[] wordsAsArray = text.split(" ");
+            List<String> words = Arrays.stream(wordsAsArray)
+                    .map(String::toLowerCase)
+                    .map(NoiseUtils::leaveOnlyEnglishSymbols)
+                    .filter(StopWordUtils::isNotEmptyWord)
+                    .filter(StopWordUtils::isNotStopWord)
+                    .filter(ShitWordUtils::isNotShitWord)
+                    .collect(Collectors.toList());
+
+            ProgressService.updateProgress(ProgressState.WORDS_POPULARITY);
+            Map<String, Long> wordsByPopularity = words.stream()
+                    .collect(Collectors.groupingBy(
+                            Function.identity(),
+                            Collectors.counting()
+                    ));
+
+            ProgressService.updateProgress(ProgressState.WORDS_SORTING_AND_LIMITING);
+            LinkedHashMap<String, Long> sortedWordsByPopularity = wordsByPopularity.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                    .limit(5)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                            (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+            ProgressService.updateProgress(ProgressState.WORDS_PRINTING);
+
+            debug("===================== RESULTS =====================");
+            sortedWordsByPopularity.forEach((key, value) -> debug(key + " => " + value));
+            debug("===================== RESULTS =====================");
+        } catch (IOException | InterruptedException e) {
+            debug("================== (!) WARNING ==================");
+            debug("Execution aborted...");
+            ProgressService.consoleProgress();
+            debug("================== (!) WARNING ==================");
+        }
+        debug("Completed...");
     }
 }
