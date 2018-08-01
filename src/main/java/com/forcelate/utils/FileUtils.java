@@ -57,6 +57,18 @@ public class FileUtils {
         writer.close();
     }
 
+    public static String readCategoryText(Category category) throws IOException {
+        String currentPath = System.getProperty("user.dir");
+        String categoryFilePath = currentPath + "/" + DESCRIPTIONS_FOLDER + "/" + category.getValue() + EXTENSION;
+        BufferedReader reader = new BufferedReader(new FileReader(categoryFilePath));
+        StringBuilder text = new StringBuilder();
+        String currentLine = "";
+        while ((currentLine = reader.readLine()) != null) {
+            text.append(currentLine);
+        }
+        return text.toString();
+    }
+
     public static List<File> getVacanciesFiles() {
         String currentPath = System.getProperty("user.dir");
         String vacanciesPath = currentPath + "/vacancies";
