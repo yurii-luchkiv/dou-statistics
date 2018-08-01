@@ -69,6 +69,13 @@ team => 176
 knowledge => 167
 python => 149
 ====================
+QA:
+experience => 1655
+testing => 1298
+test => 1100
+knowledge => 727
+team => 583
+====================
 Ruby:
 experience => 211
 ruby => 99

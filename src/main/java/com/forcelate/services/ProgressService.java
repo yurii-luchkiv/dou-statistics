@@ -26,6 +26,7 @@ public class ProgressService {
         debug("Progress: " + progress.getStage());
         if (!progress.getMessages().isEmpty()) {
             progress.getMessages().forEach(Logger::debug);
+            progress.getMessages().clear();
         }
         debug("========================================");
     }

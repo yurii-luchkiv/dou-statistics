@@ -13,6 +13,7 @@ public enum Category {
     NET(".NET"),
     NODEJS("Node.js"),
     PHP("PHP"),
+    QA("QA"),
     PRODUCT_MANAGER("Product Manager"),
     PROJECT_MANAGER("Project Manager"),
     PYTHON("Python"),
