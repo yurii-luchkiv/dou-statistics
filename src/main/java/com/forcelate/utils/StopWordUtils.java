@@ -1,6 +1,6 @@
 package com.forcelate.utils;
 
-import com.forcelate.configuration.Configuration;
+import com.forcelate.configuration.Language;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,14 +11,14 @@ import java.util.stream.Stream;
 public class StopWordUtils {
     private final static Map<String, Set<String>> ALPHABET_MAPPING = new LinkedHashMap<>();
 
-    public static void load() throws IOException {
+    public static void load(Language language) throws IOException {
         String fileName;
-        if (Configuration.LANGUAGE.isEn()) {
+        if (language.isEn()) {
             fileName = "src/main/resources/stopwords_en.txt";
-        } else if (Configuration.LANGUAGE.isRu()) {
+        } else if (language.isRu()) {
             fileName = "src/main/resources/stopwords_ru.txt";
         } else {
-            throw new RuntimeException("No Language Support: " + Configuration.LANGUAGE);
+            throw new RuntimeException("No Language Support: " + language);
         }
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             stream.forEach(line -> {

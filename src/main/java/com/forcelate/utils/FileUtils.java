@@ -19,6 +19,9 @@ public class FileUtils {
         // descriptions
         Path descriptionsPath = Paths.get(getDescriptionsFolderPath());
         Files.createDirectories(descriptionsPath);
+        // charts
+        Path chartsPath = Paths.get(chartsFolderPath());
+        Files.createDirectories(chartsPath);
     }
 
     public static void saveCategoryUrls(Category category, List<String> urls) throws IOException {

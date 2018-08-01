@@ -6,6 +6,7 @@ public class PathUtils {
 
     private final static String JOBS_FOLDER = "jobs";
     private final static String DESCRIPTIONS_FOLDER = "descriptions";
+    private final static String CHARTS_FOLDER = "charts";
 
     private final static String EXTENSION = ".txt";
 
@@ -36,5 +37,14 @@ public class PathUtils {
 
     public static String getJobPath(Category category) {
         return getJobsFolderPath() + "/" + category.getValue() + EXTENSION;
+    }
+
+    // Charts
+    public static String chartsFolderPath() {
+        return current() + "/" + CHARTS_FOLDER;
+    }
+
+    public static String chartFilePath(String name) {
+        return current() + "/" + CHARTS_FOLDER + "/" + name;
     }
 }

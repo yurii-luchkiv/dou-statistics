@@ -1,7 +1,8 @@
 package com.forcelate.configuration;
 
 public class Constants {
-    public final static String DOU_URL = "https://jobs.dou.ua/vacancies/?category=";
+    public static final int SLEEP_BETWEEN_CLICK_LOAD_MORE = 10000;
+    public static final String DOU_URL = "https://jobs.dou.ua/vacancies/?category=";
 
     public class CssSelectors {
         public static final String MORE_BUTTON = ".more-btn > a";

@@ -1,9 +1,7 @@
 package com.forcelate.services;
 
-import com.forcelate.configuration.Configuration;
 import com.forcelate.configuration.Constants;
 import com.forcelate.domain.Category;
-import com.forcelate.logger.Logger;
 import com.forcelate.utils.PathUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,9 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.forcelate.configuration.Constants.CssSelectors.MORE_BUTTON;
-import static com.forcelate.configuration.Constants.CssSelectors.VACANCIES_URLS;
-import static com.forcelate.configuration.Constants.CssSelectors.VACANCY_DESCRIPTIONS;
+import static com.forcelate.configuration.Constants.CssSelectors.*;
 import static com.forcelate.configuration.Constants.DOU_URL;
 import static com.forcelate.logger.Logger.debug;
 
@@ -40,7 +36,7 @@ public class ScrapperService {
             iteration++;
             debug("Iteration (urls) [~ xx / " + iteration * 40 + "]");
             debug("Sleeping...zzz....");
-            Thread.sleep(Configuration.SLEEP_BETWEEN_CLICK_LOAD_MORE);
+            Thread.sleep(Constants.SLEEP_BETWEEN_CLICK_LOAD_MORE);
         }
 
         List<String> urls = findURLsBySelenium(driver);

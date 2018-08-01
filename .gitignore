@@ -5,7 +5,7 @@ build/
 logs/
 jobs/
 descriptions/
-vacancies/
+charts/
 
 # IDEA
 .idea/
