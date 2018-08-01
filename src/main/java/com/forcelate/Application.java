@@ -33,18 +33,22 @@ public class Application {
             ShitWordUtils.load();
 
             // scrape: URLs
-            ProgressService.updateProgress(ProgressState.URL_SCRAPPING);
-            List<String> urls = ScrapperService.scrapeURLs(category);
+            if (!Configuration.EXECUTION_STEPS.isSkipScrapeURLs()) {
+                ProgressService.updateProgress(ProgressState.URL_SCRAPPING);
+                List<String> urls = ScrapperService.scrapeURLs(category);
 
-            ProgressService.updateProgress(ProgressState.URL_SAVING);
-            FileUtils.saveCategoryUrls(category, urls);
+                ProgressService.updateProgress(ProgressState.URL_SAVING);
+                FileUtils.saveCategoryUrls(category, urls);
+            }
 
             // scrape: descriptions
-            ProgressService.updateProgress(ProgressState.DESCRIPTION_SCRAPPING);
-            String descriptions = ScrapperService.scrapeDescriptions(category);
+            if (!Configuration.EXECUTION_STEPS.isSkipScrapeDescriptions()) {
+                ProgressService.updateProgress(ProgressState.DESCRIPTION_SCRAPPING);
+                String descriptions = ScrapperService.scrapeDescriptions(category);
 
-            ProgressService.updateProgress(ProgressState.DESCRIPTION_SAVING);
-            FileUtils.saveCategoryDescriptions(category, descriptions);
+                ProgressService.updateProgress(ProgressState.DESCRIPTION_SAVING);
+                FileUtils.saveCategoryDescriptions(category, descriptions);
+            }
 
             // find words
             ProgressService.updateProgress(ProgressState.DESCRIPTION_READING);
@@ -52,13 +56,25 @@ public class Application {
 
             ProgressService.updateProgress(ProgressState.WORDS_PROCESSING);
             String[] wordsAsArray = text.split(" ");
+
+            long[] iteration = { 0 };
+
             List<String> words = Arrays.stream(wordsAsArray)
                     .map(String::toLowerCase)
-                    .map(NoiseUtils::leaveOnlyEnglishSymbols)
-                    .filter(StopWordUtils::isNotEmptyWord)
+                    .map(NoiseUtils::leaveOnlySymbols)
+                    .filter(StringUtils::isNotEmptyWord)
                     .filter(StopWordUtils::isNotStopWord)
                     .filter(ShitWordUtils::isNotShitWord)
+                    .peek(word -> {
+                        if (word.contains("spring")) {
+                            iteration[0]++;
+                        }
+                    })
                     .collect(Collectors.toList());
+
+            debug("===");
+            System.out.println("Spring: " + iteration[0]);
+            debug("===");
 
             ProgressService.updateProgress(ProgressState.WORDS_POPULARITY);
             Map<String, Long> wordsByPopularity = words.stream()

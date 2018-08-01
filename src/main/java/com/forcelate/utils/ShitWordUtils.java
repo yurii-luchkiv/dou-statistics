@@ -1,5 +1,7 @@
 package com.forcelate.utils;
 
+import com.forcelate.configuration.Configuration;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +13,14 @@ public class ShitWordUtils {
     private final static Map<String, Set<String>> ALPHABET_MAPPING = new LinkedHashMap<>();
 
     public static void load() throws IOException {
-        String fileName = "src/main/resources/shitwords.txt";
+        String fileName;
+        if (Configuration.LANGUAGE.isEn()) {
+            fileName = "src/main/resources/shitwords_en.txt";
+        } else if (Configuration.LANGUAGE.isRu()) {
+            fileName = "src/main/resources/shitwords_ru.txt";
+        } else {
+            throw new RuntimeException("No Language Support: " + Configuration.LANGUAGE);
+        }
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             stream.forEach(line -> {
                 String[] strings = line.split("=");
