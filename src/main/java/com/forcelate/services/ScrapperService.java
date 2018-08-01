@@ -1,14 +1,22 @@
 package com.forcelate.services;
 
 import com.forcelate.domain.Category;
+import com.forcelate.utils.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScrapperService {
 
@@ -47,6 +55,32 @@ public class ScrapperService {
 
         return urls;
     }
+
+    public static String scrapeDescriptions(Category category) {
+        StringBuilder descriptions = new StringBuilder();
+        String categoryFilePath = FileUtils.getCategoryFilePath(category);
+        try (Stream<String> stream = Files.lines(Paths.get(categoryFilePath))) {
+            stream.forEach(url -> {
+                try {
+                    System.out.println("...");
+                    Document document = Jsoup.connect(url).get();
+                    Elements elements = document.select(".vacancy-section > p");
+                    elements.forEach(element -> {
+                        // TODO: add comment
+                        descriptions.append(element.text());
+                    });
+                    descriptions.append("\n");
+                } catch (IOException e) {
+                    // TODO
+                }
+            });
+
+        } catch (IOException e) {
+            // TODO
+        }
+        return descriptions.toString();
+    }
+
 
     // ------------------------------------------------------------------------------------------
     // PRIVATE METHODS

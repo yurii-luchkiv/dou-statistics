@@ -1,7 +1,7 @@
 package com.forcelate.utils;
 
 public class NoiseUtils {
-    private final static String SPECIAL_CHARACTERS = "[-+.^:,!@#$%&*()?]";
+    private final static String SPECIAL_CHARACTERS = "[-+—.^:,!@#$%&*()?]";
 //    private final static String ONLY_SYMBOLS = "[^\\w]";
     private final static String ONLY_SYMBOLS = "[^A-Za-z]+";
 

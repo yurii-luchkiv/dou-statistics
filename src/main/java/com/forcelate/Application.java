@@ -5,15 +5,26 @@ import com.forcelate.services.ScrapperService;
 import com.forcelate.utils.FileUtils;
 
 import java.io.IOException;
-import java.util.*;
 
 public class Application {
     public static void main(String[] args) throws IOException {
         Category category = Category.NODEJS;
         FileUtils.prepareFolders();
-        List<String> urls = ScrapperService.scrapeURLs(category);
-        FileUtils.saveCategoriesUrls(category, urls);
 
+
+//        List<String> urls = ScrapperService.scrapeURLs(category);
+//        FileUtils.saveCategoryUrls(category, urls);
+
+        String descriptions = ScrapperService.scrapeDescriptions(category);
+        FileUtils.saveCategoryDescriptions(category, descriptions);
+
+
+//        String description = element.outerHtml();
+//                        try {
+//                            FileUtils.saveVacancy(randomId(), description);
+//                        } catch (IOException e) {
+//                            // TODO
+//                        }
 
         // load stop words
 //        StopWordUtils.load();

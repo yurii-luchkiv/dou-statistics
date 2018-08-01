@@ -13,17 +13,28 @@ import java.util.stream.Stream;
 
 public class FileUtils {
     private final static String JOBS_FOLDER = "jobs";
+    private final static String DESCRIPTIONS_FOLDER = "descriptions";
 
     private final static String EXTENSION = ".txt";
 
     public static void prepareFolders() throws IOException {
         String currentPath = System.getProperty("user.dir");
+        // jobs
         String jobsFolderPath = currentPath + "/" + JOBS_FOLDER;
-        Path path = Paths.get(jobsFolderPath);
-        Files.createDirectories(path);
+        Path jobsPath = Paths.get(jobsFolderPath);
+        Files.createDirectories(jobsPath);
+        // descriptions
+        String descriptionsFolderPath = currentPath + "/" + DESCRIPTIONS_FOLDER;
+        Path descriptionsPath = Paths.get(descriptionsFolderPath);
+        Files.createDirectories(descriptionsPath);
     }
 
-    public static void saveCategoriesUrls(Category category, List<String> urls) throws IOException {
+    public static String getCategoryFilePath(Category category) {
+        String currentPath = System.getProperty("user.dir");
+        return currentPath + "/" + JOBS_FOLDER + "/" + category.getValue() + EXTENSION;
+    }
+
+    public static void saveCategoryUrls(Category category, List<String> urls) throws IOException {
         String currentPath = System.getProperty("user.dir");
         String categoryFilePath = currentPath + "/" + JOBS_FOLDER + "/" + category.getValue() + EXTENSION;
         BufferedWriter writer = new BufferedWriter(new FileWriter(categoryFilePath));
@@ -35,6 +46,14 @@ public class FileUtils {
                 // TODO add to progress
             }
         });
+        writer.close();
+    }
+
+    public static void saveCategoryDescriptions(Category category, String descriptions) throws IOException {
+        String currentPath = System.getProperty("user.dir");
+        String categoryFilePath = currentPath + "/" + DESCRIPTIONS_FOLDER + "/" + category.getValue() + EXTENSION;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(categoryFilePath));
+        writer.write(descriptions);
         writer.close();
     }
 

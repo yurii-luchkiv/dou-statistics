@@ -4,6 +4,7 @@ target/
 build/
 logs/
 jobs/
+descriptions/
 vacancies/
 
 # IDEA
