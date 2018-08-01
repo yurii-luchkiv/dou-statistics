@@ -1,4 +1,11 @@
 ====================
+Blockchain:
+experience => 92
+development => 54
+blockchain => 42
+knowledge => 38
+team => 30
+====================
 Design:
 design => 442
 experience => 321
@@ -12,6 +19,13 @@ knowledge => 257
 systems => 230
 tools => 221
 development => 219
+====================
+HR:
+experience => 138
+skills => 134
+team => 132
+working => 119
+candidates => 101
 ====================
 Java:
 experience => 1159
