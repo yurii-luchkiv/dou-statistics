@@ -12,8 +12,8 @@ import static com.forcelate.logger.Logger.debug;
 public class Configurations {
 
     public static final Configuration ONE = Configuration.builder()
-            .category(Category.JAVA)
-            .language(Language.EN)
+            .category(Category.DEVOPS)
+            .language(Language.RU)
             .executionSteps(
                     ConfigurationExecutionSteps.builder()
                             .skipScrapeURLs(true)

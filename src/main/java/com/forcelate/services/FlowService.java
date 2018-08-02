@@ -82,13 +82,13 @@ public class FlowService {
                     ));
 
             ProgressService.updateProgress(ProgressState.WORDS_SORTING_AND_LIMITING);
-            LinkedHashMap<String, Long> sortedWords = WordsService.sortAndLimitAndFilterBySkills(wordsByWeight);
+            LinkedHashMap<String, Long> sortedWords = WordsService.sortAndLimit(wordsByWeight);
 
             ProgressService.updateProgress(ProgressState.WORDS_PRINTING);
             StatsService.console(sortedWords);
 
-            //ProgressService.updateProgress(ProgressState.CHART_GENERATING);
-            //ChartService.savePieChart(configuration, sortedWords);
+            ProgressService.updateProgress(ProgressState.CHART_GENERATING);
+            ChartService.savePieChart("DevOps - Вакансії (!) не англійською мовою", sortedWords);
         } catch (IOException | InterruptedException e) {
             debug("================== (!) WARNING ==================");
             debug("Execution aborted...");
@@ -108,7 +108,7 @@ public class FlowService {
 
         List<String> words = Arrays.stream(wordsAsArray)
                 .map(String::toLowerCase)
-                .map(word -> NoiseUtils.leaveOnlySymbols(Language.EN, word))
+                .map(word -> NoiseUtils.leaveOnlySymbols(Language.RU, word))
                 .filter(StringUtils::isNotEmptyWord)
                 .filter(StopWordUtils::isNotStopWord)
                 .filter(ShitWordUtils::isNotShitWord)
@@ -122,14 +122,14 @@ public class FlowService {
                 ));
 
         ProgressService.updateProgress(ProgressState.WORDS_SORTING_AND_LIMITING);
-        LinkedHashMap<String, Long> sortedWords = WordsService.sortAndLimitAndFilterBySkills(wordsByWeight);
+        LinkedHashMap<String, Long> sortedWords = WordsService.sortAndLimit(wordsByWeight);
 
         ProgressService.updateProgress(ProgressState.WORDS_PRINTING);
         StatsService.console(sortedWords);
 
         try {
             ProgressService.updateProgress(ProgressState.CHART_GENERATING);
-            ChartService.savePieChart("Databases", sortedWords);
+            ChartService.savePieChart("Найбільш популярні слова - Вакансії (!) не англійською мовою", sortedWords);
         } catch (IOException e) {
             debug("================== (!) WARNING ==================");
             debug("Execution aborted...");
