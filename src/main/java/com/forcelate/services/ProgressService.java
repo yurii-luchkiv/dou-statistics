@@ -22,12 +22,12 @@ public class ProgressService {
     // PRIVATE METHODS
     // ------------------------------------------------------------------------------------------
     public static void consoleProgress() {
-        debug("========================================");
         debug("Progress: " + progress.getStage());
         if (!progress.getMessages().isEmpty()) {
+            debug("========================================");
             progress.getMessages().forEach(Logger::debug);
             progress.getMessages().clear();
+            debug("========================================");
         }
-        debug("========================================");
     }
 }

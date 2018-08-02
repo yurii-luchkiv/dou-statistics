@@ -9,7 +9,7 @@ public class Application {
 
     public static void main(String[] args) {
         debug("Started...");
-        executeOne();
+        executeAll();
         debug("Completed...");
     }
 
@@ -18,8 +18,13 @@ public class Application {
         FlowService.executeAnalysis(Configurations.ONE);
     }
 
+    private static void executeAllOneByOne() {
+        debug("Execute All One-By-One...");
+        Configurations.getAll().forEach(FlowService::executeAnalysis);
+    }
+
     private static void executeAll() {
         debug("Execute All...");
-        Configurations.getAll().forEach(FlowService::executeAnalysis);
+        FlowService.executeAnalysis(Configurations.getAll());
     }
 }

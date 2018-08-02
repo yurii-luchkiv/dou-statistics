@@ -2,7 +2,6 @@ package com.forcelate.configuration;
 
 import com.forcelate.domain.Category;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,8 +12,8 @@ import static com.forcelate.logger.Logger.debug;
 public class Configurations {
 
     public static final Configuration ONE = Configuration.builder()
-            .category(Category.FRONT_END)
-            .language(Language.RU)
+            .category(Category.JAVA)
+            .language(Language.EN)
             .executionSteps(
                     ConfigurationExecutionSteps.builder()
                             .skipScrapeURLs(true)

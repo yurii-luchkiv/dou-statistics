@@ -1,0 +1,5 @@
+b=browserify
+g=grunt,gulp
+n=npm
+w=webpack
+y=yeoman

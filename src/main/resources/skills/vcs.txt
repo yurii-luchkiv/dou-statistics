@@ -1,0 +1,4 @@
+c=cvs
+g=git
+m=mercurial
+s=svn

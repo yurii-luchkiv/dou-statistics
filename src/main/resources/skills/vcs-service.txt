@@ -1,0 +1,4 @@
+a=assembla
+b=bitbucket,beanstalk
+g=github,gitlab
+s=sourceforge

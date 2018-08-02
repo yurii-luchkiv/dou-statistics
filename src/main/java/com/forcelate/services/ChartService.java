@@ -14,12 +14,16 @@ import static com.forcelate.utils.PathUtils.chartFilePath;
 
 public class ChartService {
 
-    public static void savePieChart(Configuration configuration, LinkedHashMap<String, Long> sortedWordsByPopularity) throws IOException {
-        String name = configuration.getCategory().getValue() + "-" + configuration.getLanguage();
+    public static void savePieChart(Configuration configuration, LinkedHashMap<String, Long> sortedWordsByWeight) throws IOException {
+        String pieName = configuration.getCategory().getValue() + "-" + configuration.getLanguage();
+        savePieChart(pieName, sortedWordsByWeight);
+    }
+
+    public static void savePieChart(String pieName, LinkedHashMap<String, Long> sortedWordsByWeight) throws IOException {
         PieChart chart = new PieChartBuilder()
                 .width(800)
                 .height(600)
-                .title(name)
+                .title(pieName)
                 .theme(Styler.ChartTheme.GGPlot2)
                 .build();
 
@@ -28,9 +32,9 @@ public class ChartService {
         chart.getStyler().setAnnotationDistance(1.15);
         chart.getStyler().setPlotContentSize(.7);
         chart.getStyler().setStartAngleInDegrees(90);
-        sortedWordsByPopularity.forEach(chart::addSeries);
+        sortedWordsByWeight.forEach(chart::addSeries);
 
-        String fileName = chartFilePath(name);
-        BitmapEncoder.saveBitmapWithDPI(chart, fileName, BitmapEncoder.BitmapFormat.PNG, 300);
+        String fileName = chartFilePath(pieName);
+        BitmapEncoder.saveBitmapWithDPI(chart, fileName, BitmapEncoder.BitmapFormat.JPG, 400);
     }
 }

@@ -1,0 +1,8 @@
+a=android
+c=c++,c#
+g=go
+i=ios
+j=java,javascript
+p=python,php
+r=ruby
+s=scala

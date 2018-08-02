@@ -1,0 +1,10 @@
+a=autorabit
+b=bamboo,buddy,buildbot,buildkite
+c=circle,circleci,codeship,codefresh,cruisecontrol
+g=gitlabci
+h=hudson
+j=jenkins
+n=nevercode
+s=semaphore
+t=teamcity,travis,travisci
+w=wercker

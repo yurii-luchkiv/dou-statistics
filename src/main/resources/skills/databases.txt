@@ -1,0 +1,10 @@
+c=cassandra,couchdb
+d=druid,dynamo
+h=hbase
+m=mysql,mongodb,mariadb,memcachedb
+n=neo4j
+o=orientdb
+p=postgresql,mssql
+r=redis
+s=sqlite
+v=vertica
